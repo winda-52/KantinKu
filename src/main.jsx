@@ -10,17 +10,21 @@ import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./utils/AuthContext";
 
 const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/KantinKu">
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-        <ProductProvider> 
-        <CartProvider>
-          <App />
-          <Toaster position="top-right" reverseOrder={false} />
-        </CartProvider>
-        </ProductProvider>
+          <ProductProvider>
+            <CartProvider>
+              <App />
+              <Toaster
+                position="top-right"
+                reverseOrder={false}
+              />
+            </CartProvider>
+          </ProductProvider>
         </AuthProvider>
       </QueryClientProvider>
     </BrowserRouter>
