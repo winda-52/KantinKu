@@ -8,7 +8,7 @@ export const products = [
     category: 1,
     category_name: "Makanan",
     rating: 4.5,
-    img: "/images/nasi-goreng.jpeg",
+    img: "/KantinKu/images/nasi-goreng.jpeg",
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ export const products = [
     category: 1,
     category_name: "Makanan",
     rating: 4.7,
-    img: "/images/ayam-geprek.jpeg",
+    img: "/KantinKu/images/ayam-geprek.jpeg",
   },
   {
     id: 3,
@@ -30,7 +30,7 @@ export const products = [
     category: 1,
     category_name: "Makanan",
     rating: 4.3,
-    img: "/images/mie-goreng.jpeg",
+    img: "/KantinKu/images/mie-goreng.jpeg",
   },
   {
     id: 4,
@@ -41,7 +41,7 @@ export const products = [
     category: 2,
     category_name: "Minuman",
     rating: 4.4,
-    img: "/images/es-teh.jpeg",
+    img: "/KantinKu/images/es-teh.jpeg",
   },
   {
     id: 5,
@@ -52,7 +52,7 @@ export const products = [
     category: 2,
     category_name: "Minuman",
     rating: 4.6,
-    img: "/images/es-jeruk.jpeg",
+    img: "/KantinKu/images/es-jeruk.jpeg",
   },
   {
     id: 6,
@@ -63,6 +63,6 @@ export const products = [
     category: 2,
     category_name: "Minuman",
     rating: 4.8,
-    img: "/images/kopi-susu.jpeg",
+    img: "/KantinKu/images/kopi-susu.jpeg",
   },
 ];
