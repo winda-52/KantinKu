@@ -1,111 +1,253 @@
-//use location to get state passed from Link
 import { useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { useCart } from "../../utils/CartContext";
 
 export default function ProductDetail() {
-  {/* Mengambil ID produk dari URL */ }
   const { id } = useParams();
-  // Mengambil state yang dikirim dari Link
+
   const location = useLocation();
-  // state adalah objek produk yang dikirim dari Link
-  const p = location.state;
-  // State untuk rating dan review
+
+  // Mengambil data menu dari halaman sebelumnya
+  const p = location.state?.p;
+
+  // Mengambil fungsi cart dari CartContext
+  const { addToCart } = useCart();
+
+  // State rating dan ulasan
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
   const [reviews, setReviews] = useState([]);
-// Handle submit review
+
+  // =========================
+  // TAMBAH PESANAN
+  // =========================
+  const handleAddToCart = () => {
+  alert("TOMBOL BERHASIL DIKLIK");
+};
+
+  // =========================
+  // KIRIM ULASAN
+  // =========================
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!rating || !review.trim()) return;
-// Membuat objek review baru
+
+    // Jika rating atau ulasan kosong
+    if (!rating || !review.trim()) {
+      return;
+    }
+
     const newReview = {
       id: Date.now(),
-      rating,
-      review,
+      rating: rating,
+      review: review,
     };
-// Menambahkan review baru ke daftar reviews
+
     setReviews([...reviews, newReview]);
+
+    // Kosongkan form
     setRating(0);
     setReview("");
   };
 
+  // =========================
+  // JIKA MENU TIDAK DITEMUKAN
+  // =========================
+  if (!p) {
+    return (
+      <div className="p-6 text-center">
+        <h1 className="text-2xl font-bold mb-2">
+          Menu tidak ditemukan
+        </h1>
+
+        <p className="text-gray-600">
+          Data menu tidak tersedia.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="p-6 space-y-6 flex gap-6">
-      <section className="flex-4 gap-6">
-        <div className="border rounded-lg p-4 shadow hover:shadow-lg">
-          <h1 className="text-2xl font-bold">{p.name}</h1>
-          <p className="mt-4">{p.price}</p>
+    <div className="p-6 max-w-5xl mx-auto">
+
+      {/* ========================= */}
+      {/* DETAIL MENU */}
+      {/* ========================= */}
+
+      <div className="grid md:grid-cols-2 gap-8 mb-8">
+
+        {/* ========================= */}
+        {/* GAMBAR MENU */}
+        {/* ========================= */}
+
+        <div className="border rounded-xl overflow-hidden shadow-sm">
+          <img
+            src={p.img}
+            alt={p.name}
+            className="w-full h-80 object-cover"
+          />
         </div>
-        <div>
-          <h2 className="text-xl font-semibold mb-3">User Reviews</h2>
+
+        {/* ========================= */}
+        {/* INFORMASI MENU */}
+        {/* ========================= */}
+
+        <div className="border rounded-xl p-6 shadow-sm">
+
+          {/* Kategori */}
+          <p className="text-sm text-gray-500 mb-2">
+            {p.category_name}
+          </p>
+
+          {/* Nama menu */}
+          <h1 className="text-3xl font-bold mb-3">
+            {p.name}
+          </h1>
+
+          {/* Rating */}
+          <p className="text-yellow-500 mb-3">
+            ⭐ {p.rating}
+          </p>
+
+          {/* Harga */}
+          <p className="text-2xl font-bold text-blue-600 mb-3">
+            Rp {p.price.toLocaleString("id-ID")}
+          </p>
+
+          {/* Stok */}
+          <p className="text-gray-600 mb-6">
+            Stok tersedia: {p.stock}
+          </p>
+
+          {/* ========================= */}
+          {/* TOMBOL TAMBAH PESANAN */}
+          {/* ========================= */}
+
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            className="relative z-10 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition cursor-pointer"
+          >
+            Tambah Pesanan
+          </button>
+
+        </div>
+      </div>
+
+
+      {/* ========================= */}
+      {/* BAGIAN ULASAN */}
+      {/* ========================= */}
+
+      <div className="grid md:grid-cols-2 gap-6">
+
+        {/* ========================= */}
+        {/* DAFTAR ULASAN */}
+        {/* ========================= */}
+
+        <section>
+
+          <h2 className="text-2xl font-bold mb-4">
+            Ulasan Pelanggan
+          </h2>
+
+          {/* Conditional Rendering */}
           {reviews.length === 0 ? (
-            <p className="text-gray-500">Belum ada review.</p>
+            <p className="text-gray-500">
+              Belum ada ulasan.
+            </p>
           ) : (
-            <ul className="space-y-4">
+            <div className="space-y-4">
+
               {reviews.map((r) => (
-                <li
+                <div
                   key={r.id}
-                  className="border rounded-lg p-4 bg-gray-50 shadow-sm"
+                  className="border rounded-lg p-4"
                 >
-                  <div className="flex items-center gap-2 mb-2">
-                    {/* Menampilkan bintang sesuai rating */}
-                    {[...Array(r.rating)].map((_, i) => (
-                      <span key={i} className="text-yellow-500">★</span>
-                    ))}
-                    {[...Array(5 - r.rating)].map((_, i) => (
-                      <span key={i} className="text-gray-300">★</span>
-                    ))}
+
+                  {/* Rating */}
+                  <div className="mb-2 text-yellow-500">
+                    {"★".repeat(r.rating)}
+                    {"☆".repeat(5 - r.rating)}
                   </div>
-                  <p className="text-gray-700">{r.review}</p>
-                </li>
+
+                  {/* Isi ulasan */}
+                  <p>
+                    {r.review}
+                  </p>
+
+                </div>
               ))}
-            </ul>
+
+            </div>
           )}
-        </div>
-      </section>
-      <section className="border rounded-lg p-4 shadow hover:shadow-lg flex-1">
-        <h2 className="text-xl font-semibold mt-6">Reviews</h2>
-        {/* Form Rating & Review */}
-        <form onSubmit={handleSubmit} className="mb-6">
-          <div className="mb-4">
-            <label className="block text-lg font-medium mb-2">Rating:</label>
-            <div className="flex gap-2">
-              {/* Menampilkan 5 bintang untuk rating */}
+
+        </section>
+
+
+        {/* ========================= */}
+        {/* FORM ULASAN */}
+        {/* ========================= */}
+
+        <section className="border rounded-xl p-5 shadow-sm">
+
+          <h2 className="text-xl font-bold mb-4">
+            Beri Ulasan
+          </h2>
+
+          <form onSubmit={handleSubmit}>
+
+            {/* Rating */}
+            <label className="block font-medium mb-2">
+              Rating
+            </label>
+
+            <div className="flex gap-2 mb-4">
+
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   type="button"
                   key={star}
                   onClick={() => setRating(star)}
-                  className={`text-2xl ${star <= rating ? "text-yellow-500" : "text-gray-300"
-                    }`}
+                  className={`text-2xl cursor-pointer ${
+                    star <= rating
+                      ? "text-yellow-500"
+                      : "text-gray-300"
+                  }`}
                 >
                   ★
                 </button>
               ))}
-            </div>
-          </div>
 
-          <div className="mb-4">
-            <label className="block text-lg font-medium mb-2">Review:</label>
-            {/* Textarea untuk review */}
+            </div>
+
+
+            {/* Ulasan */}
+            <label className="block font-medium mb-2">
+              Ulasan
+            </label>
+
             <textarea
               value={review}
-              // Menampilkan textarea untuk review
               onChange={(e) => setReview(e.target.value)}
-              className="w-full border rounded-lg p-3"
-              rows="3"
-              placeholder="Tulis pengalaman Anda..."
-            ></textarea>
-          </div>
+              className="w-full border rounded-lg p-3 mb-4"
+              rows="4"
+              placeholder="Tulis pengalaman kamu..."
+            />
 
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-          >
-            Submit
-          </button>
-        </form>
-      </section>
+
+            {/* Tombol kirim */}
+            <button
+              type="submit"
+              className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer"
+            >
+              Kirim Ulasan
+            </button>
+
+          </form>
+
+        </section>
+
+      </div>
 
     </div>
   );

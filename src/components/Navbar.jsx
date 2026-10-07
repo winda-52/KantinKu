@@ -10,7 +10,7 @@ export default function Navbar() {
     <nav className="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
       {/* Logo */}
       <Link to="/" className="font-bold text-xl">
-        MyShop
+        KantinKu
       </Link>
       {/* Menu Navigasi */}
       <div className="flex gap-6">
@@ -19,7 +19,7 @@ export default function Navbar() {
           Dashboard
         </Link>
         <Link to="/cart" className="hover:text-gray-200">
-          Keranjang
+          Pesanan
           {/* Menampilkan totalQty jika ada item di keranjang */}
           {totalQty > 0 && (
             <span className=" bg-red-500 text-xs px-2 rounded-full">

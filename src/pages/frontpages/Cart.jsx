@@ -6,12 +6,12 @@ export default function Cart() {
   const { cart, updateQty, removeFromCart } = useCart();
 
   if (cart.length === 0) {
-    return <div className="p-6 text-center text-gray-600">Cart is empty</div>;
+    return <div className="p-6 text-center text-gray-600">Pesanan masih kosong</div>;
   }
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
+      <h1 className="text-2xl font-bold mb-4">Pesanan Saya</h1>
       <div className="space-y-4">
         {/* Menampilkan item di cart */}
         {cart.map((item) => (
